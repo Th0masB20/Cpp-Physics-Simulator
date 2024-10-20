@@ -7,16 +7,15 @@ class Entity
 {
     private:
         std::string tag;
-        int id;
-        bool active;
+        size_t id;
+        bool alive = false;
         std::tuple<CTransform, CCollision, CShape> m_Components;
+        Entity(std::string tag, int id):tag(tag), id(id), alive(true) {}
 
     public:
-        Entity(std::string tag, int id):tag(tag), id(id) {}
-
         std::string& getTag();
-        int getId();
-        bool isActive();
+        size_t getId();
+        bool isAlive();
         void destroy();
 
         template<typename C>
@@ -49,4 +48,6 @@ class Entity
             auto& component = getComponent<C>();
             component = C();
         }
+
+        friend class EntityManager;
 };

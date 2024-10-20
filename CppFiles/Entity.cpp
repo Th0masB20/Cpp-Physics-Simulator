@@ -1,11 +1,11 @@
 #include "Entity.h"
 
-bool Entity::isActive()
+bool Entity::isAlive()
 {
-    return active;
+    return alive;
 }
 
-int Entity::getId()
+size_t Entity::getId()
 {
     return id;
 }
@@ -17,5 +17,5 @@ std::string& Entity::getTag()
 
 void Entity::destroy()
 {
-    active = false;
+    alive = false;
 }

@@ -39,9 +39,14 @@ class CShape : public Component
     private:
         sf::CircleShape shape;
         int points;
+        float radius;
 
     public:
-        CShape():points(0){}
+        CShape():points(0), radius(0){}
+        CShape(float radius, int points):points(points), radius(radius)
+        {
+            shape = sf::CircleShape(radius, points);
+        }
         sf::CircleShape& getShape();
 };
 
