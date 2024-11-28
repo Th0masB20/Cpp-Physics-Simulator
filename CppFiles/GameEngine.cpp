@@ -1,9 +1,70 @@
 #include "GameEngine.h"
-#include "EntityManager.h"
+#include "GameScene.h"
 
 void GameEngine::init()
 {
     m_window.create(sf::VideoMode(400,400), "Physics Simulator");
+    m_sceneMap["main"] = std::make_shared<GameScene>();
+    m_sceneMap["main"]->init();
+}
+
+sf::RenderWindow& GameEngine::window()
+{
+    return m_window;
+}
+
+void GameEngine::quit()
+{
+    m_running = false;
+}
+
+void GameEngine::sRender()
+{
+    m_window.clear(sf::Color::Black);
+    //render anything on the scene
+    m_sceneMap["main"]->sRender(m_window);
+    m_window.display();
+}
+
+void GameEngine::sUserInput(sf::Event event)
+{
+    if(event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased )
+    {
+        int code = event.key.code;
+        //if the code isnt in the action map, return
+        if(m_sceneMap["main"]->getActionMap().find(code) == m_sceneMap["main"]->getActionMap().end()) 
+        {
+            return;
+        }
+        
+        std::string actionType = event.type == sf::Event::KeyPressed ? "START" : "END";
+        Action action(actionType, m_sceneMap["main"]->getActionMap().at(code));
+        m_sceneMap["main"]->doAction(action);
+    }
+
+    if(event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased)
+    {
+        //-2 is left (0 - 2) and right is -1 (1 - 2)
+        int code = event.mouseButton.button  == 0 ? -2 :-1;
+
+        //if the code isnt in the action map, return
+        if(m_sceneMap["main"]->getActionMap().find(code) == m_sceneMap["main"]->getActionMap().end()) 
+        {
+            return;
+        }
+
+        Vect2 mousePosition(event.mouseButton.x, event.mouseButton.y);
+
+        std::string actionType = event.type == sf::Event::MouseButtonPressed ? "START" : "END";
+        Action action(actionType, m_sceneMap["main"]->getActionMap().at(code), mousePosition);
+        m_sceneMap["main"]->doAction(action);
+    }
+}
+
+void GameEngine::update()
+{
+    m_sceneMap["main"]->update();
+    sRender(); //gameEngine render which contains scene render and a refresh action
 }
 
 void GameEngine::run()
@@ -20,53 +81,8 @@ void GameEngine::run()
             {
                 quit();
             }
-            
-            if(event.type == sf::Event::KeyPressed)
-            {
-                int code = event.key.code;
-                if(code == sf::Keyboard::T)
-                {
-                    auto entity = m_EntityManager.addEntity("Player");
-                    entity->addComponent<CShape>(10,10);
-                }
-                
-                if(code == sf::Keyboard::G)
-                {
-                    m_EntityManager.removeEntity(0);
-                }
-            }
-        }
 
-        sRender();
-    }
-}
-
-void GameEngine::sRender()
-{
-    m_window.clear(sf::Color::Black);
-    for(auto& entity : m_EntityManager.getEntity())
-    {
-        if(entity->getComponent<CShape>().has)
-        {
-            m_window.draw(entity->getComponent<CShape>().getShape());
+            sUserInput(event);
         }
     }
-    m_window.display();
-}
-
-void GameEngine::quit()
-{
-    m_running = false;
-}
-
-void GameEngine::update()
-{
-    m_EntityManager.update();
-    //inputs 
-    //physics
-}
-
-sf::RenderWindow& GameEngine::window()
-{
-    return m_window;
 }

@@ -14,6 +14,7 @@ class CTransform : public Component
 {
     private:
         Vect2 position;
+        Vect2 previousPosition;
         float velocity;
         float acceleration;
 
@@ -29,7 +30,7 @@ class CTransform : public Component
 
         CTransform()
             : position(Vect2(0,0)), velocity(0), acceleration(0){};
-        Vect2& getPosition();
+        const Vect2& getPosition() const;
         float getVelocity();
         float getAcceleration();
 };
@@ -45,8 +46,12 @@ class CShape : public Component
         CShape():points(0), radius(0){}
         CShape(float radius, int points):points(points), radius(radius)
         {
-            shape = sf::CircleShape(radius, points);
+            shape = sf::CircleShape(radius, points);\
+            //center origin
+            shape.setOrigin(radius, radius);
         }
+
+        void setPosition(Vect2 position);
         sf::CircleShape& getShape();
 };
 
