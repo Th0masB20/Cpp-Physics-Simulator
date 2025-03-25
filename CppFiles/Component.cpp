@@ -5,14 +5,18 @@ const Vect2& CTransform::getPosition() const
     return position;
 }
 
-float CTransform::getVelocity()
+const Vect2& CTransform::getVelocity() const
 {
     return velocity;
 }
 
-float CTransform::getAcceleration()
+void CTransform::setPosition(Vect2 newPosition)
 {
-    return acceleration;
+    position = newPosition;
+}
+void CTransform::setVelocity(Vect2 newVelocity)
+{
+    velocity = newVelocity;
 }
 
 sf::CircleShape& CShape::getShape()
@@ -24,3 +28,20 @@ void CShape::setPosition(Vect2 position)
 {
     shape.setPosition(sf::Vector2f(position.x, position.y));
 }
+
+void CLineShape::setPosition(Vect2 position)
+{
+    line.setPosition(sf::Vector2f(position.x, position.y));
+}
+
+void CLineShape::setLineLength(float length)
+{
+    this->length = length;
+    line.setSize({length, width});
+}
+
+sf::RectangleShape& CLineShape::getLine()
+{
+    return line;
+}
+

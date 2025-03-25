@@ -41,14 +41,25 @@ const std::shared_ptr<Entity> EntityManager::removeEntity(size_t id)
 
 void EntityManager::update()
 {
-    for(auto entity : m_toAdd)
+    for(auto& entity : m_entities)
+    {
+        if(!entity->isAlive())
+        {
+            m_toRemove.push_back(entity);
+        }
+    }
+
+    for(auto& entity : m_toAdd)
     {
         m_entities.push_back(entity);
+        m_tagToEntity[entity->getTag()].push_back(entity);
     }
 
     for(auto& removeEntity : m_toRemove)
     {
         m_entities.erase(std::remove(m_entities.begin(), m_entities.end(), removeEntity), m_entities.end());
+        auto& tagVector = m_tagToEntity[removeEntity->getTag()];
+        tagVector.erase(std::remove(tagVector.begin(), tagVector.end(), removeEntity), tagVector.end());
     }
 
 

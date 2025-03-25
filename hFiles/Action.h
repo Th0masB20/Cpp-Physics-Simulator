@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include "Vect2.h"
+#include <string>
 
 class Action
 {
@@ -12,7 +12,7 @@ class Action
     public:
         Action(std::string type, std::string name):m_type(type), m_name(name){}
         Action(std::string type, std::string name, Vect2 mousePosition): m_type(type), m_name(name) ,m_mousePosition(mousePosition){}
-        
+
         const std::string& getType() const
         {
             return m_type;
@@ -23,7 +23,7 @@ class Action
             return m_name;
         }
 
-        Vect2 getMousePosition()
+        Vect2& getMousePosition()
         {
             return m_mousePosition;
         }

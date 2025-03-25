@@ -1,7 +1,7 @@
 #pragma once 
+#include "Component.h"
 #include <iostream>
 #include <tuple>
-#include "Component.h"
 
 class Entity
 {
@@ -9,7 +9,7 @@ class Entity
         std::string tag;
         size_t id;
         bool alive = false;
-        std::tuple<CTransform, CCollision, CShape> m_Components;
+        std::tuple<CTransform, CCollision, CShape, CLineShape> m_Components;
         Entity(std::string tag, int id):tag(tag), id(id), alive(true) {}
 
     public:

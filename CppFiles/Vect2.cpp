@@ -11,6 +11,11 @@ Vect2 Vect2::operator - (Vect2& otherVector)const
     return Vect2(x - otherVector.x, y - otherVector.y);
 }
 
+Vect2 Vect2::operator - (const Vect2& otherVector)const 
+{
+    return Vect2(x - otherVector.x, y - otherVector.y);
+}
+
 Vect2 Vect2::operator * (float value)const 
 {
     return Vect2(x * value, y * value);
@@ -49,16 +54,30 @@ Vect2& Vect2::operator /= (float value)
     return *this;
 }
 
+float Vect2::lenghSquared(const Vect2& vector1, const Vect2& vector2)
+{
+    Vect2 distance = vector1 - vector2;
+    return (distance.x*distance.x + distance.y*distance.y); 
+}
+
+float Vect2::lenghSquared(Vect2& vector1, Vect2& vector2)
+{
+    Vect2 distance = vector1 - vector2;
+    return (distance.x*distance.x + distance.y*distance.y); 
+}
+
+
 float Vect2::lenghSquared()
 {
-    return (x*x + y*y); 
+    Vect2 currentVect = *this;
+    return (currentVect.x * currentVect.x + currentVect.y*currentVect.y); 
 }
 
 Vect2 Vect2::normalize()
 {
-    float lengthSquared = sqrt(this->lenghSquared());
+    float sqrtLength = sqrt(this->lenghSquared());
     Vect2 norm = *this;
-    norm /= lengthSquared;
+    norm /= sqrtLength;
     return norm;
 }
 

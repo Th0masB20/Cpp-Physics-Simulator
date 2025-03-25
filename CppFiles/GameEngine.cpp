@@ -1,5 +1,6 @@
 #include "GameEngine.h"
 #include "GameScene.h"
+#include <math.h>
 
 void GameEngine::init()
 {
@@ -54,17 +55,10 @@ void GameEngine::sUserInput(sf::Event event)
         }
 
         Vect2 mousePosition(event.mouseButton.x, event.mouseButton.y);
-
         std::string actionType = event.type == sf::Event::MouseButtonPressed ? "START" : "END";
         Action action(actionType, m_sceneMap["main"]->getActionMap().at(code), mousePosition);
         m_sceneMap["main"]->doAction(action);
     }
-}
-
-void GameEngine::update()
-{
-    m_sceneMap["main"]->update();
-    sRender(); //gameEngine render which contains scene render and a refresh action
 }
 
 void GameEngine::run()
@@ -73,7 +67,6 @@ void GameEngine::run()
 
     while(m_running)
     {
-        update();
         sf::Event event;
         while(m_window.pollEvent(event))
         {
@@ -84,5 +77,7 @@ void GameEngine::run()
 
             sUserInput(event);
         }
+        m_sceneMap["main"]->update(m_window);
+        sRender();
     }
 }

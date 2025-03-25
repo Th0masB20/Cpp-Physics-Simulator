@@ -2,10 +2,10 @@
 #include "SFML/Graphics.hpp"
 #include "EntityManager.h"
 #include "Entity.h"
-#include <iostream>
-#include <map>
 #include "Scene.h"  
 #include "GameScene.h"
+#include <iostream>
+#include <map>
 
 class GameEngine{
     private:
@@ -15,7 +15,6 @@ class GameEngine{
 
     public:
         void init(); //initializes window 
-        void update(); //updates everything in windows
         void run(); // called once to start game
         void quit();
         void sUserInput(sf::Event event);
